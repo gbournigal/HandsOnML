@@ -8,10 +8,11 @@ Created on Wed Sep 21 10:43:33 2022
 import pandas as pd
 import numpy as np
 from utils import load_housing_data, HOUSING_PATH, full_pipeline, num_pipeline
-from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV
+from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV, RandomizedSearchCV
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import mean_squared_error
 from sklearn.svm import SVR
+from scipy.stats import loguniform
 
 
 def get_housing_prepared(full_pipeline):
@@ -59,11 +60,24 @@ def exercise_1():
                                n_jobs=-1, 
                                verbose=2)
     grid_search.fit(housing_prepared, housing_labels)
-    
-    negative_mse = grid_search.best_score_
-    rmse = np.sqrt(-negative_mse)
-    rmse
+    return grid_search
     
 
 def exercise_2():
+    param_distribs = {
+        'kernel': ['linear', 'rbf'],
+        'C': loguniform(100, 500000),
+        'gamma': loguniform(0.01, 2)
+    }
     
+    svm_reg = SVR()
+    rnd_search = RandomizedSearchCV(svm_reg, 
+                                    param_distributions=param_distribs,
+                                    n_iter=30,
+                                    cv=5, 
+                                    scoring='neg_mean_squared_error',
+                                    verbose=2, 
+                                    random_state=42,
+                                    n_jobs=-1)
+    rnd_search.fit(housing_prepared, housing_labels)
+    return rnd_search
