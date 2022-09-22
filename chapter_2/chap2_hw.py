@@ -33,9 +33,9 @@ def get_housing_prepared(full_pipeline):
     cat_attribs = ["ocean_proximity"]
     
     full_pipeline = full_pipeline(num_pipeline, 
-                                     OneHotEncoder(), 
-                                     num_attribs,
-                                     cat_attribs)
+                                  OneHotEncoder(), 
+                                  num_attribs,
+                                  cat_attribs)
     
     housing_prepared = full_pipeline.fit_transform(housing)
     
@@ -91,3 +91,12 @@ def exercise_3():
     forest_reg.fit(housing_prepared, housing_labels)
     feature_importances = forest_reg.feature_importances_
     feature_importances
+    
+    num_attribs = full_pipeline.transformers[0][2]
+    extra_attribs = ["rooms_per_hhold", "pop_per_hhold", "bedrooms_per_room"]
+    #cat_encoder = cat_pipeline.named_steps["cat_encoder"] # old solution
+    cat_encoder = full_pipeline.named_transformers_["cat"]
+    cat_one_hot_attribs = list(cat_encoder.categories_[0])
+    attributes = num_attribs + extra_attribs + cat_one_hot_attribs
+    
+    
