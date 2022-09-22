@@ -12,6 +12,7 @@ from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV, Random
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import mean_squared_error
 from sklearn.svm import SVR
+from sklearn.ensemble import RandomForestRegressor
 from scipy.stats import loguniform
 
 
@@ -38,10 +39,10 @@ def get_housing_prepared(full_pipeline):
     
     housing_prepared = full_pipeline.fit_transform(housing)
     
-    return housing_prepared, housing_labels, strat_test_set
+    return housing_prepared, housing_labels, strat_test_set, full_pipeline
 
 
-housing_prepared, housing_labels, strat_test_set = get_housing_prepared(full_pipeline)
+housing_prepared, housing_labels, strat_test_set, full_pipeline = get_housing_prepared(full_pipeline)
 
 def exercise_1():
     param_grid = [
@@ -81,3 +82,12 @@ def exercise_2():
                                     n_jobs=-1)
     rnd_search.fit(housing_prepared, housing_labels)
     return rnd_search
+
+
+def exercise_3():
+    forest_reg = RandomForestRegressor(n_estimators=180,
+                                       max_features=7,
+                                       random_state=42)
+    forest_reg.fit(housing_prepared, housing_labels)
+    feature_importances = forest_reg.feature_importances_
+    feature_importances
