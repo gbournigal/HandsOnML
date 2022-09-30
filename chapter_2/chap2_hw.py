@@ -5,14 +5,13 @@ Created on Wed Sep 21 10:43:33 2022
 @author: gbournigal
 """
 
+import pickle
 import pandas as pd
 import numpy as np
 from utils import load_housing_data, HOUSING_PATH, full_pipeline, num_pipeline
-from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV, RandomizedSearchCV
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, PowerTransformer
-from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
 from scipy.stats import loguniform
@@ -67,6 +66,7 @@ def exercise_1():
                                n_jobs=-1, 
                                verbose=2)
     grid_search.fit(housing_prepared, housing_labels)
+    pickle.dump(grid_search, open('ex_1.sav', 'wb'))
     return grid_search
     
 
