@@ -23,6 +23,6 @@ st.title('🏗️ End-to-End Machine Learning Project')
 
 with st.expander("Q 2.1:"):
     st.write("""Try a Support Vector Machine regressor (sklearn.svm.SVR), with various hyperparameters such as kernel="linear" (with various values for the C hyperparameter) or kernel="rbf" (with various values for the C and gamma hyperparameters). Don't worry about what these hyperparameters mean for now. How does the best SVR predictor perform?""")
-    # grid_search = pickle.load(open(new_path))
-    st.write(cur_path)
-    st.write(new_path)
+    # grid_search = pickle.load(open('/app/handsonml/chapter_2/ex_1.sav'))
+    grid_search = pickle.load(open('C:/Users/gbournigal/Documents/GitHub/HandsOnML/chapter_2/ex_1.sav', 'rb'))
+    st.write(grid_search.best_params_)
